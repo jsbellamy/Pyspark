@@ -1,4 +1,9 @@
 # Databricks notebook source
+# MAGIC %md ## Overview:
+# MAGIC Demo of replacing Jinja templates within a column using Pyspark
+
+# COMMAND ----------
+
 # DBTITLE 1,Install Packages
 dbutils.library.installPyPI('jinja2')
 
