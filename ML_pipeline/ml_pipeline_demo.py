@@ -26,7 +26,7 @@ def add_column_index(df):
     '''Adds a column index to an existing dataframe.'''
     
     new_schema = StructType(
-        df.schema.fields + [StructField("ColumnIndex", LongType(), False),]
+        df.schema.fields + [StructField('ColumnIndex', LongType(), False),]
     )
     new_df = df.rdd.zipWithIndex().map(
         lambda row: row[0] + (row[1],)).toDF(schema=new_schema)
@@ -61,7 +61,7 @@ def feature_to_matrix(df, feature_col):
 
     shape = (
         df.count(),
-        df.rdd.map(attrgetter("features")).first().size
+        df.rdd.map(attrgetter(feature_col)).first().size
     )
 
     mat = csr_matrix((data, (row_indices, col_indices)), shape=shape)
@@ -82,28 +82,28 @@ df = spark.createDataFrame([
     (0.0, 2.0),
     (0.0, 1.0),
     (2.0, 0.0)
-], ["categoryIndex1", "categoryIndex2"])
+], ['categoryIndex1', 'categoryIndex2'])
 
 # Data pipeline for feature creation
 encoder = OneHotEncoderEstimator(
-    inputCols=["categoryIndex1"],
-    outputCols=["categoryVec1"]
+    inputCols=['categoryIndex1'],
+    outputCols=['categoryVec1']
 )
 assembler = VectorAssembler(
-    inputCols=['categoryVec1', "categoryIndex2"],
-    outputCol="features"
+    inputCols=['categoryVec1', 'categoryIndex2'],
+    outputCol='features'
 )
 # pca = PCA(
 #     k=2,
-#     inputCol="features",
-#     outputCol="pcaFeatures"
+#     inputCol='features',
+#     outputCol='pcaFeatures'
 # )
 pipeline = Pipeline(stages=[encoder, assembler])
 pipelineFit = pipeline.fit(df)
 output = pipelineFit.transform(df)
 
 # Transform all dense matrix to sparse
-output_sparse = output.withColumn("features", to_sparse(col("features")))
+output_sparse = output.withColumn('features', to_sparse(col('features')))
 # Add a row index to join results later
 output_index = add_column_index(output_sparse)
 
@@ -123,8 +123,8 @@ clusterer.fit(feature_mat.todense())
 # DBTITLE 1,Cluster Result
 # Transform clustered results to Spark DataFrame and join on original
 schema = StructType([
-    StructField("group_name", StringType()),
-    StructField("cluster_prob", FloatType())
+    StructField('group_name', StringType()),
+    StructField('cluster_prob', FloatType())
 ])
 df_cluster = spark.createDataFrame(
     zip(clusterer.labels_.tolist(), clusterer.probabilities_.tolist()),
