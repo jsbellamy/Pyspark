@@ -1,2 +1,2 @@
 # Pyspark
-databricks/pyspark
+Databricks notebook repository using pyspark
