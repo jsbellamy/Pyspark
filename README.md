@@ -1,2 +1,8 @@
 # Pyspark
-Databricks notebook repository using pyspark
+Notebook repository using pyspark
+
+## Data Munging
+Jupyter notebook samples
+
+## ML Pipeline
+Databricks notebook examples
