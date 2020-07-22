@@ -5,4 +5,4 @@ Notebook repository using pyspark
 Jupyter notebook samples
 
 ## ML Pipeline
-Databricks notebook examples
+Jupyter/Databricks notebook examples
